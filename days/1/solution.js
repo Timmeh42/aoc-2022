@@ -1,12 +1,26 @@
 module.exports = function (input) {
-    const elves = input.trim()
-        .split('\n\n')
-        .map(e => e.split('\n')
-            .map(n => parseInt(n))
-            .reduce((sum, n) => sum + n, 0)
-        );
-    const part1 = Math.max(...elves);
+    const elves = [];
+    let topElf = 0;
+    let elf = 0;
+    let calorie = 0;
+    for (let s = 0; s < input.length; s++) {
+        const charCode = input.charCodeAt(s)
+        if (charCode === 10) {
+            if (calorie === 0) {
+                elves.push(elf);
+                if (elf > topElf) {
+                    topElf = elf;
+                }
+                elf = 0;
+            } else {
+                elf += calorie;
+                calorie = 0;
+            }
+        } else {
+            calorie = calorie * 10 + charCode - 48;
+        }
+    }
     elves.sort((a, b) => b - a);
-    const part2 = elves.slice(0, 3).reduce((sum, n) => sum + n, 0)
-    return [part1, part2];
+    const top3 = elves.slice(0, 3).reduce((sum, x) => sum + x, 0);
+    return [topElf, top3];
 }
