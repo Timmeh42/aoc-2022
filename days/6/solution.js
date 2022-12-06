@@ -4,18 +4,28 @@ module.exports = function (input) {
     let part2 = 0;
     const part1Length = 4;
     const part2Length = 14;
-    for (let s = 0; s < input.length; s++) {
-        if (part1 === 0) {
-            const buffer1 = new Set(input.slice(s - part1Length, s));
-            if (buffer1.size === part1Length) {
-                part1 = s;
+    let start1 = 0;
+    let start2 = 0;
+    for (let end = 0; end < input.length; end++) {
+        const endChar = input[end];
+        if (!part1) {
+            for (let n = start1; n < end; n++) {
+                if (input[n] === endChar) {
+                    start1 = n + 1;
+                }
+            }
+            if (start1 === end - part1Length + 1) {
+                part1 = end + 1;
             }
         }
-        if (part2 === 0) {
-            const buffer2 = new Set(input.slice(s - part2Length, s));
-            if (buffer2.size === part2Length) {
-                part2 = s;
-                break;
+        if (!part2) {
+            for (let n = start2; n < end; n++) {
+                if (input[n] === endChar) {
+                    start2 = n + 1;
+                }
+            }
+            if (start2 === end - part2Length + 1) {
+                part2 = end + 1;
             }
         }
     }
